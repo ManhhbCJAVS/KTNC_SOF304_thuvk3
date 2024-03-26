@@ -22,27 +22,33 @@ public class methodTest {
         return sanPhams;
     }
 
-    public void addProduct(SanPham sp) {
+    public String addProduct(SanPham sp) {
         try {
             Integer.valueOf(sp.getSoLuong());
             if (0 > sp.getSoLuong() || sp.getSoLuong() > 100) {
-                throw new IllegalArgumentException(" 0  < Số lượng số nguyên dương < 100");
+                return " 0  < Số lượng số nguyên dương < 100";
             }
             sanPhams.add(sp);
         } catch (Exception e) {
-            throw new IllegalArgumentException("Phải là số nguyên dương");
+            return "Phải là số nguyên dương";
         }
+        return "";
     }
 
-    public String updateCostProduct(String maSP, int gia) {
+    public String updateProductByID(String id, String maSP) {
         //Ko trùng mã sản phẩm + bắt đầu là SP
         for (int i = 0; i < getSanPhams().size(); i++) {
-            if (getSanPhams().get(i).getTenSanPham().equals(maSP)) {
-                getSanPhams().get(i).setGia(gia);
+            if (getSanPhams().get(i).getId().equals(id)) {
+                if (!maSP.startsWith("SP")) {
+                    return "Mã sản phải bắt đầu bắt 'SP' ";
+                } else if (getSanPhams().get(i).getMaSanPham().equals(maSP)) {//TH trùng mã
+                    return "Mã sửa trùng với mã sản phẩm";
+                }
+                getSanPhams().get(i).setMaSanPham(maSP);
                 return "Sửa giá sản phẩm thành công";
             }
         }
-        return "Sửa giá sản phẩm lỗi";
+        return "Không tìm thấy sản phẩm để sửa";
     }
 
     public String deleteProduct(String maSP) {
